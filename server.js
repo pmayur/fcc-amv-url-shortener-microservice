@@ -29,9 +29,9 @@ app.post('/api/shorturl/new', function(req, res) {
       data.clear();
     }
 
-    data.set(urlReceived, data.size)
+    data.set(data.size.toString(), urlReceived)
 
-    let shortUrl = data.get(urlReceived)
+    let shortUrl = (data.size - 1).toString();
 
     res.json({
       "original_url": urlReceived,
@@ -47,6 +47,20 @@ app.post('/api/shorturl/new', function(req, res) {
   }
 })
 
+app.get('/api/shorturl/:shortURL', function(req, res) {
+  let shortURL = req.params.shortURL;
+
+  let actualURL = data.get(shortURL)
+  
+  if(actualURL) {
+    res.redirect(actualURL)
+  } else {
+    res.json({
+      "error": "invalid url"
+    })
+  }
+
+})
 // Your first API endpoint
 app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
